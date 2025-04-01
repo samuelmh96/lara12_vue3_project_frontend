@@ -11,7 +11,7 @@ if (dev) {
 
 export const BASE_URL_API = `${BASE_URL}/api`;
 
-export default function api() {
+export default function Api() {
 
     const token = localStorage.getItem("access_token");
 
@@ -29,7 +29,33 @@ export default function api() {
         },
         (error) => {
         //error 401 (auth) redirect to login
-        if (error.response?.status === 401) {
+            if (error.response?.status === 401) {
+            localStorage.removeItem("access_token");
+            location.href = "/auth/login";
+        }
+        return Promise.reject(error);
+    });
+
+    return api;
+}
+
+export function ApiAuth() {
+
+    const api = axios.create({
+        baseURL: BASE_URL_API,
+        headers: {
+            'Accept': 'application/json',
+        },
+    });
+
+    api.interceptors.response.use(
+        (response) => {
+        return response;
+        },
+        (error) => {
+        //error 401 (auth) redirect to login
+            if (error.response?.status === 401) {
+            localStorage.removeItem("access_token");
             location.href = "/auth/login";
         }
         return Promise.reject(error);

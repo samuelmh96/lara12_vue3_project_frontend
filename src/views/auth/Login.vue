@@ -6,16 +6,19 @@
     <input type="email" placeholder="Ingrese su correo" v-model="credenciales.email" />
     <span style="color: red;">{{ errors.email }}</span>
     <br>
+    <br>
 
     <label for="">Ingrese su contraseña: </label>
     <input type="password" placeholder="Ingrese su contraseña" v-model="credenciales.password" />
     <span style="color: red;">{{ errors.password }}</span>
 
-    <br>
+    <br><br>
     <button @click="funIngresar()">Ingresar </button>
 
     <br>
+    <br>
     {{ credenciales }}
+    <br>
     <br>
     {{ respuesta }}
 
