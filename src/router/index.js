@@ -1,43 +1,58 @@
-import { createWebHashHistory, createRouter, createWebHistory } from "vue-router";
-
-import Inicio from "./../views/web/Inicio.vue";
-import Nosotros from "./../views/web/Nosotros.vue";
-import Servicios from "./../views/web/Servicios.vue";
-import Login from "./../views/auth/Login.vue";
-import Blog from "./../views/web/Blog.vue";
-import Perfil from "./../views/admin/perfil/Perfil.vue";
-import Usuario from "./../views/admin/user/Usuario.vue";
-import AppLayout from "./../layout/AppLayout.vue";
+import { createWebHashHistory, createRouter, createWebHistory } from 'vue-router'
+import Inicio from "./../views/web/Inicio.vue"
+import Nosotros from '../views/web/Nosotros.vue';
+import Servicios from '../views/web/Servicios.vue';
+import Login from '../views/auth/Login.vue';
+import Blog from '../views/web/Blog.vue';
+import Perfil from '../views/admin/perfil/Perfil.vue';
+import Usuario from '../views/admin/user/Usuario.vue';
+import AppLayout from '@/layout/AppLayout.vue';
+import LayoutSitio from '../components/layoutsitio/LayoutSitio.vue';
+import Producto from '../views/web/Producto.vue';
+import Persona from '../views/admin/persona/Persona.vue';
 
 const routes = [
-    { path: "/", component: Inicio },
-    { path: "/nosotros", component: Nosotros },
-    { path: "/servicios", component: Servicios },
-    { path: "/blog", component: Blog, },
     {
-        path: "/auth/login",
-        component: Login,
-        name: "Login",
-        meta: { redirectIfAuth: true }
+        path: "/",
+        component: LayoutSitio,
+        children: [
+            { path: "/", component: Inicio },
+            { path: "/nosotros", component: Nosotros },
+            { path: "/servicios", component: Servicios },
+            { path: "/blog", component: Blog },
+            { path: "/productos", component: Producto },
+            {
+                path: "/auth/login",
+                component: Login,
+                name: 'Login',
+                meta: {redirectIfAuth: true}
+            },
+        ]
     },
     {
         path: '/admin',
         component: AppLayout,
         children: [
             {
-                path: "perfil",
+                path: 'perfil',
                 component: Perfil,
-                name: "MiPerfil",
-                meta: { requireAuth: true }
+                name: 'MiPerfil',
+                meta: {requireAuth: true}
             },
             {
-                path: "usuario",
+                path: 'usuario',
                 component: Usuario,
-                name: "Usuario",
-                meta: { requireAuth: true }
+                name: 'Usuario',
+                meta: {requireAuth: true}
             },
+            {
+                path: 'persona',
+                component: Persona,
+                name: 'Persona',
+                meta: {requireAuth: true}
+            }
         ]
-    },
+    }
     
 ];
 
@@ -46,20 +61,21 @@ const router = createRouter({
     routes
 });
 
-//Guards
+// Guards
 router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('access_token');
-    if (to.meta.requireAuth) {
-        if (!token) {
-            return next({ name: 'Login' });
-        } 
-            return next();
+    const token  = localStorage.getItem("access_token");
+
+    if(to.meta.requireAuth){
+        if(!token){
+            return next({name: "Login"})
+        }
+        return next();
     }
-    if (to.meta.redirectIfAuth && token) {
-        return next({ name: 'MiPerfil' });
+    if(to.meta.redirectIfAuth && token){
+        return next({name: 'MiPerfil'})
     }
     return next();
-}
-);
+
+})
 
 export default router;
