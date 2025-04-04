@@ -1,5 +1,5 @@
 <template>
-  <h1>Publications</h1>
+  <!-- <h1>Publications</h1> -->
   <!-- <RouterLink to="/">Inicio</RouterLink> !
   <RouterLink to="/nosotros">Nosotros</RouterLink> !
   <RouterLink to="/servicios">Servicios</RouterLink> !
